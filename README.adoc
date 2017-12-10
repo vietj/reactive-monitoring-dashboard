@@ -1,0 +1,77 @@
+= Reactive Metrics Dashboard
+
+Reactive metrics dashboard demo.
+
+== Polling (01)
+
+Metrics dashboard polling metrics from the server, which itself polls metrics from the agent at http://localhost:8081
+
+Start the agent
+
+```
+> java -jar 01-polling-agent/target/fat.jar
+```
+
+Start the dashboard server
+
+```
+> java -jar 01-polling-dashboard/target/fat.jar
+```
+
+Open your browser at http://localhost:8080
+
+== Push (02)
+
+Metrics dashboard polling metrics from the server, which gets metrics pushed by the agent through the event bus
+
+Start the agent
+
+```
+> java -jar 02-push-agent/target/fat.jar -cluster
+```
+
+Start the dashboard server
+
+```
+> java -jar 02-push-dashboard/target/fat.jar -cluster
+```
+
+Open your browser at http://localhost:8080
+
+== Bridge (03)
+
+Metrics dashboard pushed to the browser through the event bus bridge, which gets gets metrics pushed by the agent through the event bus
+
+Start the agent
+
+```
+> java -jar 03-bridge-agent/target/fat.jar -cluster
+```
+
+Start the dashboard server
+
+```
+> java -jar 03-bridge-dashboard/target/fat.jar -cluster
+```
+
+Open your browser at http://localhost:8080
+
+== Rx (04)
+
+Metrics dashboard pushed to the browser through the event bus bridge, which gets gets metrics pushed by the agent through the event bus
+
+Metrics are aggregated using RxJava 2.
+
+Start the agent
+
+```
+> java -jar 04-rx-agent/target/fat.jar -cluster
+```
+
+Start the dashboard server
+
+```
+> java -jar 04-rx-dashboard/target/fat.jar -cluster
+```
+
+Open your browser at http://localhost:8080

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.julienviet</groupId>
+  <artifactId>monitoring-parent</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <properties>
+    <vertx.version>3.5.0</vertx.version>
+    <main.verticle>io.vertx.starter.MainVerticle</main.verticle>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>io.vertx</groupId>
+        <artifactId>vertx-dependencies</artifactId>
+        <version>${vertx.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.5.1</version>
+          <configuration>
+            <source>1.8</source>
+            <target>1.8</target>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-shade-plugin</artifactId>
+          <version>2.4.3</version>
+          <configuration>
+            <transformers>
+              <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                <manifestEntries>
+                  <Main-Class>io.vertx.core.Launcher</Main-Class>
+                  <Main-Verticle>${main.verticle}</Main-Verticle>
+                </manifestEntries>
+              </transformer>
+              <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                <resource>META-INF/services/io.vertx.core.spi.VerticleFactory</resource>
+              </transformer>
+            </transformers>
+            <artifactSet>
+            </artifactSet>
+            <outputFile>${project.build.directory}/fat.jar</outputFile>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>exec-maven-plugin</artifactId>
+          <version>1.5.0</version>
+          <configuration>
+            <mainClass>io.vertx.core.Launcher</mainClass>
+            <arguments>
+              <argument>run</argument>
+              <argument>${main.verticle}</argument>
+            </arguments>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
+  <modules>
+    <module>01-polling-agent</module>
+    <module>01-polling-dashboard</module>
+    <module>02-push-agent</module>
+    <module>02-push-dashboard</module>
+    <module>03-bridge-agent</module>
+    <module>03-bridge-dashboard</module>
+    <module>04-rx-agent</module>
+    <module>04-rx-dashboard</module>
+  </modules>
+
+
+</project>
