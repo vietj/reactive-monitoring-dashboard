@@ -72,7 +72,7 @@
     }
 
     var intervalID = setInterval(function() {
-      $.getJSON("/metric", function(data) {
+      $.getJSON("/dashboard", function(data) {
         updateDashboard(data);
       });
     }, 1000);
