@@ -29,6 +29,9 @@ public class Server extends AbstractVerticle {
     // The event bus bridge handler
     BridgeOptions options = new BridgeOptions();
     options.setOutboundPermitted(Collections.singletonList(new PermittedOptions().setAddress("dashboard")));
+
+    // Uncomment this for node agent
+    // options.setInboundPermitted(Collections.singletonList(new PermittedOptions().setAddress("metrics")));
     router.route("/eventbus/*").handler(SockJSHandler.create(vertx).bridge(options));
 
     //
@@ -42,6 +45,7 @@ public class Server extends AbstractVerticle {
     // The proxy handler
     vertx.eventBus().<JsonObject>consumer("metrics").handler(msg -> {
       JsonObject metrics = msg.body();
+      System.out.println("GOT METRICS" + metrics);
       dashboard.mergeIn(metrics);
     });
 

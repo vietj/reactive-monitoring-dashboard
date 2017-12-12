@@ -56,6 +56,12 @@ Start the dashboard server
 
 Open your browser at http://localhost:8080
 
+There is a node agent that uses the event bus bridge:
+
+- uncomment the inbound permission in Dashboard.java
+- npm install in `03-bridge-agent/src/node`
+- run `node agent.js` in `03-bridge-agent/src/node`
+
 == Rx (04)
 
 Metrics dashboard pushed to the browser through the event bus bridge, which gets gets metrics pushed by the agent through the event bus
