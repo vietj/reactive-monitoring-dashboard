@@ -45,7 +45,6 @@ public class Server extends AbstractVerticle {
     // The proxy handler
     vertx.eventBus().<JsonObject>consumer("metrics").handler(msg -> {
       JsonObject metrics = msg.body();
-      System.out.println("GOT METRICS" + metrics);
       dashboard.mergeIn(metrics);
     });
 
