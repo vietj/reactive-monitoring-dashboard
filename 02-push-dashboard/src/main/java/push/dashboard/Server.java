@@ -13,6 +13,8 @@ public class Server extends AbstractVerticle {
     vertx.deployVerticle(new Server());
   }
 
+  private JsonObject dashboard = new JsonObject();
+
   @Override
   public void start() {
 
@@ -21,16 +23,12 @@ public class Server extends AbstractVerticle {
     // The web server handler
     router.route().handler(StaticHandler.create().setCachingEnabled(false));
 
-    //
-    JsonObject dashboard = new JsonObject();
-
     router.get("/dashboard").handler(ctx -> {
       ctx.response()
         .putHeader("Content-Type", "application/json")
         .end(dashboard.encode());
     });
 
-    // The proxy handler
     vertx.eventBus().<JsonObject>consumer("metrics").handler(msg -> {
       JsonObject metrics = msg.body();
       dashboard.mergeIn(metrics);

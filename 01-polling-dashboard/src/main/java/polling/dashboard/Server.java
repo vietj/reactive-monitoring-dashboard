@@ -26,8 +26,11 @@ public class Server extends AbstractVerticle {
 
     // The proxy handler
     WebClient client = WebClient.create(vertx);
-    HttpRequest<Buffer> get = client.get(8081, "localhost", "/");
+    HttpRequest<Buffer> get = client
+      .get(8081, "localhost", "/");
+
     router.get("/dashboard").handler(ctx -> {
+
       get.send(ar -> {
         if (ar.succeeded()) {
           HttpResponse<Buffer> result = ar.result();
@@ -39,6 +42,7 @@ public class Server extends AbstractVerticle {
           ctx.fail(ar.cause());
         }
       });
+
     });
 
     vertx.createHttpServer()

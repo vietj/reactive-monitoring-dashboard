@@ -28,11 +28,15 @@ public class Server extends AbstractVerticle {
 
     // The event bus bridge handler
     BridgeOptions options = new BridgeOptions();
-    options.setOutboundPermitted(Collections.singletonList(new PermittedOptions().setAddress("dashboard")));
+    options.
+      setOutboundPermitted(
+        Collections.singletonList(
+          new PermittedOptions().setAddress("dashboard")));
 
     // Uncomment this for node agent
     // options.setInboundPermitted(Collections.singletonList(new PermittedOptions().setAddress("metrics")));
-    router.route("/eventbus/*").handler(SockJSHandler.create(vertx).bridge(options));
+    router.route("/eventbus/*")
+      .handler(SockJSHandler.create(vertx).bridge(options));
 
     //
     JsonObject dashboard = new JsonObject();
