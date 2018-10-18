@@ -1,6 +1,7 @@
 package rx.dashboard;
 
 import io.reactivex.Observable;
+import io.vertx.core.VertxOptions;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.bridge.PermittedOptions;
 import io.vertx.ext.web.handler.sockjs.BridgeOptions;
@@ -18,8 +19,14 @@ import java.util.concurrent.TimeUnit;
 public class Server extends AbstractVerticle {
 
   public static void main(String[] args) {
-    Vertx vertx = Vertx.vertx();
-    vertx.deployVerticle(Server.class.getName());
+    io.vertx.core.Vertx.clusteredVertx(new VertxOptions(), ar -> {
+      if (ar.succeeded()) {
+        io.vertx.core.Vertx vertx = ar.result();
+        vertx.deployVerticle(new Server());
+      } else {
+        ar.cause().printStackTrace();
+      }
+    });
   }
 
   @Override

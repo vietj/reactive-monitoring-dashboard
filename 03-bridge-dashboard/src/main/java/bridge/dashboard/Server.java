@@ -2,6 +2,7 @@ package bridge.dashboard;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Vertx;
+import io.vertx.core.VertxOptions;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.bridge.PermittedOptions;
 import io.vertx.ext.web.Router;
@@ -14,8 +15,14 @@ import java.util.Collections;
 public class Server extends AbstractVerticle {
 
   public static void main(String[] args) {
-    Vertx vertx = Vertx.vertx();
-    vertx.deployVerticle(new Server());
+    Vertx.clusteredVertx(new VertxOptions(), ar -> {
+      if (ar.succeeded()) {
+        Vertx vertx = ar.result();
+        vertx.deployVerticle(new Server());
+      } else {
+        ar.cause().printStackTrace();
+      }
+    });
   }
 
   @Override
